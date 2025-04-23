@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:presenly/pages/home/screens/home_screen.dart';
+import 'package:presenly/pages/set/screens/settings_screen.dart';
 import 'package:presenly/utils/constant/app_color.dart';
 
 class BottomBar extends StatefulWidget {
@@ -12,11 +13,7 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    HomeScreen(), 
-    //HistoryScreen(), 
-    //SettingsScreen()
-  ];
+  final List<Widget> _pages = [HomeScreen(), Placeholder(), SettingsScreen()];
 
   void _onBottomNavTapped(int index) {
     setState(() {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:presenly/pages/auth/screens/login/login_screen.dart';
+import 'package:presenly/pages/check-in/screens/checkin_screen.dart';
+import 'package:presenly/pages/check-out/screens/checkout_screen.dart';
 import 'package:presenly/utils/constant/app_color.dart';
 import 'package:presenly/utils/constant/app_font.dart';
 import 'package:presenly/utils/constant/app_image.dart';
@@ -214,8 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Expanded(
         //   child: ElevatedButton(
         //     onPressed:
-        //         () =>
-        //         Navigator.push(
+        //         () => Navigator.push(
         //           context,
         //           MaterialPageRoute(builder: (_) => CheckinScreen()),
         //         ),

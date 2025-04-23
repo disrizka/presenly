@@ -37,6 +37,25 @@ class DatabaseHelper {
     return await db.insert('users', user.toMap());
   }
 
+  Future<int> updateUserName(int id, String newName) async {
+    final db = await instance.database;
+    return await db.update(
+      'users',
+      {'name': newName},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<UserModel?> getUserById(int id) async {
+    final db = await instance.database;
+    final result = await db.query('users', where: 'id = ?', whereArgs: [id]);
+    if (result.isNotEmpty) {
+      return UserModel.fromMap(result.first);
+    }
+    return null;
+  }
+
   Future<void> close() async {
     final db = await instance.database;
     db.close();
