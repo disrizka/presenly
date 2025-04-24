@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(4),
-                  child: Icon(Icons.access_time, color: AppColor.primaryColor),
+                  child: Icon(Icons.history, color: AppColor.primaryColor),
                 ),
               ),
             ),

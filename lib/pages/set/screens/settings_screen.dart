@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:presenly/database/db_helper.dart';
 import 'package:presenly/pages/auth/screens/login/login_screen.dart';
 import 'package:presenly/service/pref_handler.dart';
@@ -18,11 +19,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String email = "Loading...";
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  bool isDarkMode = false;
 
   @override
   void initState() {
     super.initState();
     fetchProfile();
+    _loadThemePreference();
+  }
+
+  Future<void> _loadThemePreference() async {
+    final darkMode = await ThemePreference.getDarkMode();
+    setState(() {
+      isDarkMode = darkMode;
+    });
+  }
+
+  Future<void> _toggleTheme(bool value) async {
+    setState(() {
+      isDarkMode = value;
+    });
+    await ThemePreference.saveDarkMode(value);
+    
+    // Here you would normally also update your app's theme
+    // If you're using a theme provider or state management solution
   }
 
   Future<void> fetchProfile() async {
@@ -46,7 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder:
           (context) => AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(25),
             ),
             title: Text(
               "Edit Profile",
@@ -170,11 +190,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required String title,
     required VoidCallback onTap,
     bool showDivider = true,
+    Widget? trailing,
   }) {
     return Column(
       children: [
         InkWell(
-          onTap: onTap,
+          onTap: trailing == null ? onTap : null,
           borderRadius: BorderRadius.circular(10),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 6),
@@ -198,7 +219,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                 ),
-                Icon(
+                trailing ?? Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.grey.shade400,
                   size: 16,
@@ -282,7 +303,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   IconButton(
                     onPressed: _editProfileDialog,
-                    icon: Icon(Icons.edit, color: Colors.blue),
+                    icon: const Icon(Icons.edit, color: Colors.blue),
                   ),
                 ],
               ),
@@ -309,6 +330,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: "Bantuan",
                 onTap: () {},
                 showDivider: false,
+              ),
+            ]),
+            const SizedBox(height: 20),
+            _buildSection("Tampilan", [
+              _buildSettingItem(
+                icon: isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                title: "Mode Gelap",
+                onTap: () {},
+                trailing: Switch(
+                  value: isDarkMode,
+                  onChanged: _toggleTheme,
+                  activeColor: Colors.deepOrange,
+                ),
               ),
             ]),
             const SizedBox(height: 20),
@@ -342,7 +376,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               onPressed: () => _signOut(context),
-              icon: Icon(Icons.logout, color: AppColor.backgroundColor),
+              icon: const Icon(Icons.logout, color: AppColor.backgroundColor),
               label: Text(
                 "Sign Out",
                 style: PoppinsTextStyle.semiBold.copyWith(fontSize: 16),
@@ -383,5 +417,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+}
+
+// Add this class to handle theme preferences
+class ThemePreference {
+  static const String _darkModeKey = 'darkMode';
+
+  // Save dark mode preference
+  static Future<void> saveDarkMode(bool isDarkMode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_darkModeKey, isDarkMode);
+  }
+
+  // Get dark mode preference
+  static Future<bool> getDarkMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_darkModeKey) ?? false; // Default to light mode
   }
 }

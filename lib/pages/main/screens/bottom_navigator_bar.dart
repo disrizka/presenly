@@ -8,13 +8,17 @@ class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  State createState() => _BottomBarState();
 }
 
 class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [HomeScreen(), HistoryScreen(), SettingsScreen()];
+  final List<Widget> _pages = [
+    const HomeScreen(),
+    const HistoryScreen(),
+    const SettingsScreen(),
+  ];
 
   void _onBottomNavTapped(int index) {
     setState(() {
@@ -26,21 +30,53 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColor.backgroundColor,
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppColor.primaryColor,
-        unselectedItemColor: AppColor.primaryColor.withOpacity(0.5),
-        showSelectedLabels: false, // <-- sembunyikan label
-        showUnselectedLabels: false, // <-- sembunyikan label
-        type: BottomNavigationBarType.fixed,
-        onTap: _onBottomNavTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.white,
+            currentIndex: _selectedIndex,
+            selectedItemColor: AppColor.primaryColor,
+            unselectedItemColor: AppColor.primaryColor.withOpacity(0.5),
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            type: BottomNavigationBarType.fixed,
+            onTap: _onBottomNavTapped,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined),
+                activeIcon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history_toggle_off),
+                activeIcon: Icon(Icons.history),
+                label: 'History',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings_outlined),
+                activeIcon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
