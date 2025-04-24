@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:presenly/pages/auth/screens/login/login_screen.dart';
 import 'package:presenly/pages/check-in/screens/checkin_screen.dart';
 import 'package:presenly/pages/check-out/screens/checkout_screen.dart';
+import 'package:presenly/pages/history/screens/history_screen.dart';
 import 'package:presenly/utils/constant/app_color.dart';
 import 'package:presenly/utils/constant/app_font.dart';
 import 'package:presenly/utils/constant/app_image.dart';
@@ -177,10 +178,10 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (_) => const HistoryScreen()),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HistoryScreen()),
+                  );
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(4),
@@ -213,46 +214,45 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCheckButtons(BuildContext context) {
     return Row(
       children: [
-        // Expanded(
-        //   child: ElevatedButton(
-        //     onPressed:
-        //         () => Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (_) => CheckinScreen()),
-        //         ),
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: AppColor.secondaryColor,
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(24),
-        //       ),
-        //     ),
-        //     child: Text(
-        //       "Check in",
-        //       style: PoppinsTextStyle.semiBold.copyWith(color: Colors.white),
-        //     ),
-        //   ),
-        // ),
+        Expanded(
+          child: ElevatedButton(
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => CheckinScreen()),
+                ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.secondaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+            child: Text(
+              "Check in",
+              style: PoppinsTextStyle.semiBold.copyWith(color: Colors.white),
+            ),
+          ),
+        ),
         const SizedBox(width: 16),
-        // Expanded(
-        //   child: ElevatedButton(
-        //     onPressed:
-        //         () =>
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (_) => const CheckoutScreen()),
-        //         ),
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: Colors.deepOrange,
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(24),
-        //       ),
-        //     ),
-        //     child: Text(
-        //       "Check out",
-        //       style: PoppinsTextStyle.semiBold.copyWith(color: Colors.white),
-        //     ),
-        //   ),
-        // ),
+        Expanded(
+          child: ElevatedButton(
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CheckoutScreen()),
+                ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepOrange,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+            child: Text(
+              "Check out",
+              style: PoppinsTextStyle.semiBold.copyWith(color: Colors.white),
+            ),
+          ),
+        ),
       ],
     );
   }

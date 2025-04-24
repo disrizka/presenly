@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:presenly/pages/auth/screens/register/register_screen.dart';
+import 'package:presenly/utils/constant/app_color.dart';
 
 void main() {
   runApp(const MyApp());
 }
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   // ❗️ Reset paksa database sekali saja
+//   await DatabaseHelper.instance.resetDatabase();
+
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -29,7 +38,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primaryColor),
       ),
       home: RegisterScreen(),
     );
