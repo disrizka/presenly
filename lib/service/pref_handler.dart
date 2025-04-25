@@ -32,7 +32,7 @@ class PreferenceHandler {
   //For getting user id
   static Future<int?> getId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_id); // ✅ BUKAN getString()
+    return prefs.getInt(_id); 
   }
 
   //For getting look welcoming

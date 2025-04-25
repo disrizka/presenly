@@ -1,9 +1,13 @@
+// HomeScreen dengan tampilan nama pengguna dari database
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:presenly/database/db_helper.dart';
 import 'package:presenly/pages/auth/screens/login/login_screen.dart';
 import 'package:presenly/pages/check-in/screens/checkin_screen.dart';
 import 'package:presenly/pages/check-out/screens/checkout_screen.dart';
 import 'package:presenly/pages/history/screens/history_screen.dart';
+import 'package:presenly/service/pref_handler.dart';
 import 'package:presenly/utils/constant/app_color.dart';
 import 'package:presenly/utils/constant/app_font.dart';
 import 'package:presenly/utils/constant/app_image.dart';
@@ -16,13 +20,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String userName = "Loading...";
   final DateTime now = DateTime.now();
-
   final List<Map<String, dynamic>> features = [];
 
   @override
   void initState() {
     super.initState();
+    fetchUserName();
     features.addAll([
       {'title': 'Izin', 'icon': AppImage.iconIzin, 'screen': null},
       {'title': 'Tugas', 'icon': AppImage.iconTugas, 'screen': null},
@@ -30,6 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
       {'title': 'Lembur Out', 'icon': AppImage.iconLemburout, 'screen': null},
       {'title': 'Cek Absen', 'icon': AppImage.iconCekabsen, 'screen': null},
     ]);
+  }
+
+  Future<void> fetchUserName() async {
+    final userId = await PreferenceHandler.getId();
+    if (userId != null) {
+      final user = await DatabaseHelper.instance.getUserById(userId);
+      if (user != null) {
+        setState(() => userName = user.name);
+      }
+    }
   }
 
   @override
@@ -42,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: AppColor.backgroundColor,
         elevation: 0,
-
         title: Text(
           'Presenly',
           style: PoppinsTextStyle.bold.copyWith(
@@ -60,20 +74,36 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
         ),
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            child: CircleAvatar(
-              backgroundColor: Colors.grey[800],
-              child: Image.asset(AppImage.demoUser),
-            ),
+  Padding(
+    padding: const EdgeInsets.only(right: 10),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: 14,
+          backgroundColor: Colors.grey[800],
+          backgroundImage: AssetImage(AppImage.demoUser),
+        ),
+        const SizedBox(height: 4), // jarak antara foto dan nama
+        Text(
+          userName,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
           ),
-        ],
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    ),
+  ),
+],
+
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -87,7 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            // Fitur Lainnya
             _buildSectionTitle("Lainnya"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
